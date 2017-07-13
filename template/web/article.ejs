@@ -1,0 +1,57 @@
+<!-- 按钮——写博客 -->
+<div class="edit-btn">
+	<a ui-sref="edit">写博客</a>
+</div>
+
+<div id="article">
+	<div class="header">
+		<h2>{{article.title}}</h2>
+		<div id="author">
+				<a href="" id="author-name">作者：{{article.username}}</a>
+				<a href="" class="support" ng-click="addZan(article.ID)">{{article.support}}</a>
+				<a href="" id="req-hot">{{article.req_count}} 访问 | {{comments.length}} 评论</a>
+			
+		</div>
+		<div id="article-info">
+			<span class="keywords" ng-repeat="k in (article.keywords | toArray)">{{k}}</span>
+			<span id="publish-time">{{article.publish_time | date : 'yyyy-MM-dd HH:mm:ss'}}</span>
+		</div>
+		
+	</div>
+	<div id="content" ng-bind-html="article.content | toHTML">
+	</div>
+	<div id="footer">
+		<a href="" class="support" ng-click="addZan(article.ID)">{{article.support}}</a>
+	</div>
+	<div id="comment">
+		<div id="top">
+			<span>用户留言</span>
+			<a href="" ng-click="flag = !flag;">写留言</a>
+		</div>
+		<ul id="list">
+			<li id="input-idea" ng-show="flag">
+				<p class="critic">
+					<a href="">
+						<img src="/images/user.png" alt="头像" height="24">
+						<span>{{username}}</span>
+					</a>
+				</p>
+				<textarea name="input-content" id="input-content" placeholder="请输入您的评论，不得少于 7 个字！" ng-model="comment"></textarea>
+				<p id="input-footer">
+					<span>评论不得少于 7 个字！</span><!-- <input type="button" value="提交评论" id="btn" ng-disabled="comment.length < 7" ng-click="addComment(comment);"> --><button id="btn" ng-show="comment.length >= 7" ng-click="addComment(comment);">提交评论</button>
+				</p>
+			</li>
+			<li ng-repeat="c in comments">
+				<p class="critic">
+					<a href="">
+						<img src="/images/user.png" alt="头像" height="24">
+						<span>{{c.username}}</span>
+					</a>
+					<a href="" class="supp" ng-click="addPraise(c.ID, $index)">{{c.support}}</a>
+				</p>
+				<p class="content">{{c.comment}}</p>
+				<p class="comment-time">{{c.publish_time | date : 'yyyy-MM-dd HH:mm:ss'}}</p>
+			</li>
+		</ul>
+	</div>
+</div>

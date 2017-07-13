@@ -1,0 +1,490 @@
+@charset "UTF-8";
+body{
+	width: 100%;
+	height: 100%;
+	font-family: 'Microsoft YaHei';
+	color: #333;
+	margin: 0px;
+	padding: 0px;
+	background:#eee;
+}
+/*header start*/
+#wrap #header{
+	width: 100%;
+	height: 40px;
+	position: absolute;
+	top: 0px;
+	background: rgba(255,255,255,.2);
+	margin: 0;
+	padding: 0;
+}
+#wrap #header #brand{
+	height: 100%;
+	width: 150px;
+	padding: 5px;
+	font-size: 28px;
+	float: left;
+	margin-left: 80px;
+	box-sizing: border-box;
+}
+#wrap #header #brand a{
+	width: 33px;
+	height: 30px;
+	display: block;
+	background-image: url('/images/hi.png');
+	background-repeat: no-repeat;
+	background-size: cover;
+	float: left;
+}
+#wrap #header #brand span{
+	display: block;
+	float: right;
+	line-height: 28px;
+	color: rgba(255,255,255,.5);
+}
+#wrap #header #user{
+	width: 150px;
+	height: 40px;
+	font-size: 12px;
+	float: right;
+	line-height: 40px;
+	text-align: right;
+	margin-right: 80px;
+	padding-top: 0px;
+}
+#wrap #header #user #user-img{
+	text-decoration: none;
+}
+#wrap #header #user #user-img img{
+	margin-top: -3px;
+	border: 2px solid #fff;
+	border-radius: 100%;
+	vertical-align: middle;
+}
+#wrap #header #user #username{
+	padding-right: 10px;
+	color: red;
+}
+/*end header*/
+
+/*pic start*/
+#wrap #pic{
+	width: 100%;
+	height: 200px;
+}
+#wrap #pic img{
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+/*end pic*/
+
+/*edit-btn start*/
+#wrap .edit-btn{
+	position: fixed;
+	top: 50%;
+	right: -72px;
+	margin-top: -16px;
+	width: 102px;
+	height: 32px;
+	text-align: right;
+	background: url('/images/edit_1.png') no-repeat 0px -2px;
+	background-size: 33px;
+	transition: all 300ms;
+}
+#wrap #return{
+	background: url('/images/home.png') no-repeat 0px -2px;
+	background-size: 33px;
+}
+#wrap .edit-btn a{
+	text-decoration: none;
+	line-height: 32px;
+	font-size: 20px;
+	color: #999;
+	border: 1px solid #ccc;
+	padding: 0 5px 1px;
+}
+#wrap .edit-btn a:hover{
+	color: #666;
+	background: rgba(255,255,255,.3);
+	padding-bottom: 0;
+	padding-top: -1px;
+	box-shadow: 0px 0px 1px 1px #666;
+}
+#wrap .edit-btn:hover {
+	right: 0px;
+}
+/*end edit-btn*/
+
+/*nav start*/
+#wrap #nav{
+	width: 100%;
+	height: 30px;
+	background: rgba(0,0,0,.8);
+}
+#wrap #nav ul{
+	margin-top: 0;
+	padding-left: 15%;
+	text-align: left;
+	line-height: 20px;
+	font-size: 12px;
+	color: rgba(255,255,255,.6);
+}
+#wrap #nav ul li{
+	display: inline-block;
+	text-align: center;
+	cursor: pointer;
+	width: 50px;
+	height: 20px;
+	margin: 5px;
+}
+#wrap #nav ul .active{
+	background: #f00;
+	border-radius: 10px;
+	color: #fff;
+}
+/*end nav*/
+
+/*articles start*/
+#wrap #articles{
+	width: 70%;
+	margin: 0 auto;
+	background: #ddd;
+}
+#wrap #articles #list{
+	width: 100%;
+	padding: 0;
+	margin: 0;
+}
+#wrap #articles #list .content{
+	height: 80px;
+	list-style: none;
+	border-bottom: 1px dashed #aaa;			
+}
+#wrap #articles #list .content:hover{
+	background: #ccc;
+	text-shadow: 0 0 6px #fff;
+	height: 85px;
+}
+#wrap #articles #list .more{
+	display: block;
+}
+#wrap #articles #list .more a{
+	justify-content: center;
+	line-height: 80px;
+	color: #000;
+	font-size: 30px;
+}
+#wrap #articles #list .more a:hover{
+	text-shadow: 0 0 30px #dff;
+}
+#wrap #articles #list .content a{
+	text-decoration: none;
+	display: flex;
+	height:80px;
+}
+#wrap #articles #list .content a #title{
+	flex: 5;
+	padding-left: 10px;
+}
+#wrap #articles #list .content a #title h3{
+	line-height: 0px;
+	font-size: 24px;
+	font-weight: 500;
+	color: #000;
+}
+#wrap #articles #list .content a #title h3 .insert{
+	font-size: 16px;
+	color: #159;
+	display: none;
+}
+#wrap #articles #list .content:hover a #title h3 .insert{
+	display: inline;
+}		
+#wrap #articles #list .content a #title p span{
+	font-size: 14px;
+	display: inline-block;
+	background: orange;
+	margin: 0 3px;
+	color: #fff;
+	padding: 0 5px;
+}
+#wrap #articles #list .content a #hot{
+	flex: 1;
+	text-align: right;
+	padding-right: 10px;
+}
+#wrap #articles #list .content a #hot p{
+	background: #ccc;
+	display: inline-block;
+	margin: 0;
+	padding: 0 5px;
+	font-size: 12px;
+	line-height: 16px;
+	border-radius: 8px;
+	border: 1px inset #ccc;
+	box-shadow: -1px 0px 3px #aaa;
+	color: #666;
+}
+#wrap #articles #list .content a #hot #req{
+	margin-top: 14px;
+	
+}		
+#wrap #articles #list .content a #hot #comm{
+	margin-top: 20px;
+}
+/*end articles*/
+
+/*edit start*/
+#edit{
+	width: 90%;
+	margin: 0 auto;
+	border: 1px solid #bbb;
+	padding: 10px;
+}
+#edit p label{
+	display: inline-block;
+	width: 6%;
+	text-align: right;
+}
+#edit p .inp{
+	width: 90%;
+	height: 24px;
+	padding-left: 5px;
+	outline: none;
+}
+#edit .type{
+	margin-right: 3%;
+}
+#edit .type #msg{
+	color: #bbb;
+}
+#edit .type .type-name{
+	padding-right: 10px;
+	margin-right: 5px;
+}
+#edit .type .update{
+	padding-right: 0px;
+	background: #fff;
+	border: 1px dashed red;
+}
+#edit .type .delete{
+	text-decoration: none;
+	color: red;
+	padding-left: 5px;
+}
+#edit .type strong{
+	width: 120px;
+	height: 22px;
+	margin: 0 5px;
+}
+#edit .type strong input{
+	width: 120px;
+	height: 22px;
+	outline: none;
+	padding-left: 5px;
+}
+#edit .type strong a{
+	text-decoration: none;
+}
+#edit .type strong #save{
+	margin-left: -35px;
+	padding-right: 2px;
+	color: green;
+	font-size: 14px;
+}
+#edit .type strong #cancel{
+	color: red;
+}
+#edit .type #change{
+	float: right;
+}
+#edit #con label{
+	vertical-align: top;
+}
+#edit #con #content{
+	width: 90%;
+	height: 600px;
+	padding: 8px;
+	font-size: 14px;
+	outline: none;
+	resize: none;
+}
+#edit p #submit{
+	margin-left: 75px;
+	width: 100px;
+	height: 24px;
+	border-radius: 2px;
+	background: #0c3;
+	border: none;
+	outline: none;
+}
+#edit p #submit:hover{
+	background: #0b0;
+}
+/*end edit*/
+
+/*article start*/
+#article{
+	width: 90%;
+	margin: 0 auto;
+	border: 1px solid #ccc;
+	border-top: none;
+	padding: 0px;
+}
+#article .header h2{
+	text-align: center;
+	font-weight: 500;
+	font-size: 30px;
+	line-height: 160px;
+}
+#article .header #author{
+	width: 90%;
+	border-bottom: 1px solid #ccc;
+	margin: 0px auto;
+	padding: 1px 5px;
+	font-size: 14px;
+	display: flex;
+
+}
+#article .header #author a{
+	text-decoration: none;
+	color: #8B4513;
+	flex: 1px;
+}
+#article .header #author .support{
+	text-align: center;
+	background: url('/images/zan.png') no-repeat 135px -4px;
+	background-size: 26px;
+}
+#article .header #author #req-hot{
+	text-align: right;
+}
+#article .header #article-info{
+	width: 90%;
+	margin: 1px auto;
+	padding: 0px 5px 80px;
+}
+#article .header #article-info .keywords{
+	background: orange;
+	color: #fff;
+	padding: 0 5px;
+	margin-right: 5px;
+}
+#article .header #article-info #publish-time{
+	display: inline-block;
+	float: right;
+	text-align: right;
+	color: #aaa;
+
+}
+#article #content{
+	width: 90%;
+	margin: 0 auto;
+}
+#article #content p{
+	text-indent: 2em;
+}
+#article #footer{
+	width: 100%;
+	text-align: center;
+	margin: 50px auto;
+}
+#article #footer .support{
+	text-decoration: none;
+	padding-left: 30px;
+	color: #8B4513;
+	font-size: 20px;
+	font-weight: lighter;
+	background: url('/images/zan.png') no-repeat 6px 0px;
+	background-size: 26px;
+}
+#article #comment{
+	width: 100%;
+	margin: 0 auto;
+	border-top: 1px solid #aaa;
+	background: #eaeaea;
+}
+#article #comment #top{
+	width: 90%;
+	margin: 0 auto;
+	line-height: 40px;
+	padding: 0 5px;
+	border-bottom: 1px solid #ccc;
+}
+#article #comment #top a{
+	text-decoration: none;
+	display: inline-block;
+	float: right;
+	margin-top: 5px;
+	padding-left: 32px;
+	padding-right: 15px;
+	border-radius: 15px;
+	line-height: 30px;
+	font-size: 14px;
+	color: #fff;
+	background: orange url('/images/edit.png') no-repeat 14px 7px;
+	background-size: 16px;
+}
+#article #comment #top a:hover{
+	background-color: #FF6103;
+}
+#article #comment #list{
+	width: 90%;
+	margin: 0 auto;
+	padding: 0;
+}
+#article #comment #list li{
+	list-style: none;
+}
+#article #comment #list li p a{
+	text-decoration: none;
+	vertical-align: top;
+}
+#article #comment #list li p a img{
+	border: 2px solid #fff;
+	border-radius: 100%;
+}
+#article #comment #list li p a span{
+	vertical-align: top;
+	color: #32CD32;
+}
+#article #comment #list #input-idea #input-content{
+	width: 97%;
+	height: 120px;
+	padding: 5px;
+	margin-left: 32px;
+	resize: none;
+}
+#article #comment #list #input-idea #input-footer{
+	width: 97%;
+	margin: 3px 0 0 32px;
+}
+#article #comment #list #input-idea #input-footer span{
+	color: #aaa;
+}
+#article #comment #list #input-idea #input-footer #btn{
+	float: right;
+}
+#article #comment #list li .critic{
+	margin-bottom: 3px;
+}
+#article #comment #list li .critic .supp{
+	display: inline-block;
+	float: right;
+	color: #888;
+	line-height: 22px;
+	padding-left: 24px;
+	background: url('/images/zan_1.png') no-repeat 2px 0px;
+	background-size: 22px;
+}
+#article #comment #list li .content{
+	padding-left: 32px;
+	margin-top: 3px;
+}
+
+#article #comment #list li .comment-time{
+	margin: -8px 32px 24px;
+	color: #aaa;
+}
+/*end article*/

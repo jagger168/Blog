@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html ng-app="web">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>主页 —— Hi博客</title>
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<link href="/css/style.css" rel="stylesheet">
+	
+	<script src="/js/angular.min.js"></script>
+	<script src="/js/angular-ui-router.min.js"></script>
+	<script src="/js/angular-sanitize.min.js"></script>
+	<script src="/js/my-service.js"></script>
+	<script>
+		var app = angular.module('web', ['ui.router', 'ngSanitize', 'myServices']);
+		app.config(function($stateProvider, $urlRouterProvider){
+			// 默认路由
+			$urlRouterProvider.otherwise('first');
+
+			// 定义路由规则
+			$stateProvider
+				.state('first', {
+					url : '/first',
+					templateUrl : 'first',
+					controller : 'first'
+				})
+				.state('edit', {
+					url : '/edit',
+					templateUrl : 'edit',
+					controller : 'edit'
+				})
+				.state('article', {
+					url : '/art/{aId}',
+					templateUrl : 'article',
+					controller : 'article'
+			});
+		});
+
+		// 用户 ID
+		app.constant('userId', '<%=id %>');
+
+		// 用户名
+		app.constant('username', '<%=username %>');
+
+		// 控制器：首页
+		app.controller('first', function($scope, $http, userId, type, article){
+
+			// 获得导航条数据（文章分类）
+			type.getTypes(userId).then(function(data){
+				$scope.types = data;
+			});
+
+			$scope.n = 10;
+			$scope.tId = 0;
+
+			// 选择文章类型时 num中的属性值放生变化
+			$scope.nowIndex = -1;
+			$scope.nowNav = function(n, tId){
+				$scope.nowIndex = n;
+				$scope.n = 10;
+				$scope.tId = tId;
+			};
+
+			// 显示更多
+			$scope.showMore = function(){
+				$scope.n = $scope.n + 5;
+			};
+			
+			$scope.$watch('n', function(){
+				article.getArticles($scope.n, $scope.tId).then(function(data){
+					$scope.articles = data;
+				});
+			});
+			$scope.$watch('tId', function(){
+				article.getArticles($scope.n, $scope.tId).then(function(data){
+					$scope.articles = data;
+				});
+			});
+		});
+
+		// 控制器：编辑文章
+		app.controller('edit', function($scope, $http, userId, type){
+
+			// 获取用户ID
+			$scope.authorId = userId;
+
+			// 关键词格式
+			$scope.keywords = '';
+			$scope.escape = function(){
+				$scope.keywords = $scope.keywords.replace(/ /g,'').replace(/，/g, ',');
+			};
+
+			// 获取用户的文章类型
+			type.getTypes(userId).then(function(data){
+				$scope.types = data;
+			});
+
+			// 删除 type 分类
+			$scope.del = function(t){
+				var msg = '您确定要删除 [' + t.type_name + '] 类型吗？'
+				if (confirm(msg)) {
+					type.removeType(userId, t.ID).then(function(data){
+						$scope.types = data;
+						console.log($scope.types);
+					});
+				}
+			}
+
+			// 修改：进入修改文章分类状态
+			$scope.typeClass = ['type-name'];
+			$scope.show = false;
+			$scope.update = function(){
+				$scope.show = !$scope.show;
+				$scope.show ? $scope.typeClass.push('update') : $scope.typeClass = ['type-name'];
+			};
+			
+			// 增加 type 分类
+			$scope.newType = '';
+			$scope.addType = function(newType){
+				if (!newType) return;
+				if ($scope.types && $scope.types.length >= 10) {
+					alert('类型总数不能超过10个！');
+					return;
+				}
+				// 验证 类型是否重复
+				if ($scope.types && $scope.types.length > 0) {
+					var flag = $scope.types.every(function(item){
+						return item.type_name != newType;
+					});
+				}else{
+					flag = true;
+				}
+				
+				if (flag) {
+					type.insertType(userId, newType).then(function(data){
+						$scope.types = data;
+						$scope.newType = '';
+					});
+				}else{
+					alert('类型重复！');
+				}
+
+			};
+		});
+
+		// 控制器：文章
+		app.controller('article', function($scope, $http, $stateParams, userId, username, article, comment){
+			$scope.username = username;
+			$scope.flag = false;
+
+			// 打开文章
+			if ($stateParams.aId) {
+				article.getArticle($stateParams.aId).then(function(data){
+					$scope.article = data;
+					console.log($scope.article);
+				});
+				comment.getComments($stateParams.aId).then(function(data){
+					$scope.comments = data;
+				});
+			}
+
+			// 访问次数
+			$scope.addReqCount = function(aId){
+				article.addCount(aId, 'req_count');
+			};
+
+			// 文章点赞
+			$scope.addZan = function(aId){
+				article.addCount(aId, 'support').then(function(data){
+					$scope.article.support = data;
+				});
+			};
+
+			// 添加评论
+			$scope.addComment = function(c){
+				comment.addComment(c, userId, $stateParams.aId).then(function(data){
+					$scope.comments = data;
+					console.log($scope.comments);
+				});
+				$scope.comment = '';
+				$scope.flag = false;
+			};
+
+			// 评论点赞
+			$scope.addPraise = function(cId, index){
+				comment.addPraise(cId).then(function(data){
+					$scope.comments[index].support = data;
+				});
+			};	
+		});
+	</script>
+</head>
+<body>
+    <div id="wrap" ng-controller="first">
+
+    	<!-- 页头 -->
+    	<div id="header">
+
+    		<!-- 品牌LOGO -->
+    		<div id="brand">
+    			<a href="javascript:;">
+    				<!-- <img src="../../static/images/hi.png" alt="Hi博客" height="30"> -->
+    			</a>
+    			<span>Hi 博客</span>
+    		</div>
+
+    		<!-- 导航条——文章分类 -->
+
+    		<!-- 用户头像、用户名、退出 -->
+    		<div id="user">
+    			<a href="javascript:;" id='user-img'>
+    				<img src="/images/user.png" alt="" height="30">
+    			</a>
+    			<a href="javascript:;" id="username"><%=username %></a>
+    			<a href="javascript:;" id="close">退出</a>
+    		</div>
+    	</div>
+
+    	<!-- 长轴图 -->
+    	<div id="pic">
+    		<img src="/images/2.jpg" alt="图片">
+    	</div>
+
+    	<!-- 加载模板 -->
+    	<div ng-controller="article">
+    		<div ui-view ng-controller="edit"></div>
+    	</div>
+    	
+    	
+    </div>
+</body>
+</html>

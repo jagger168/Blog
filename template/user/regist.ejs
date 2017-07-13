@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>注册</title>
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<link href="" rel="stylesheet">
+	<script src="../js/angular.min.js"></script>
+	<style type="text/css">
+		body{
+			font-family: 'Microsoft YaHei';
+		}
+		#form-regist{
+			width: 500px;
+			height:400px;
+			background: rgba(200,200,200,.5);
+			padding: 0 10px;
+			border-radius: 10px;
+			box-shadow: 0 0 10px #aaa;
+			position:absolute;
+			left: 50%;
+			top:50%;
+			margin-left: -250px;
+			margin-top: -200px;
+		}
+		#form-regist h3{
+			font-weight: 500;
+			line-height: 40px;
+			border-bottom: 1px solid #ccc;
+		}
+		#form-regist p{
+			width: 100%;
+		}
+		#form-regist p label{
+			    width: 84px;
+			    display: inline-block;
+			    text-align: right;
+		}
+		#form-regist p input{
+			width: 200px;
+			height:24px;
+			padding-left:5px;
+			outline: none;
+		}
+		#form-regist p .sex{
+			width: 50px;
+			height: 14px;
+		}
+		#form-regist p span{
+			padding: 10px;
+			font-size: 12px;
+			font-weight: bold;
+			
+		}
+		#form-regist #submit{
+			display: block;
+			width: 240px;
+			height:30px;
+			border: none;
+			border-radius: 3px;
+			background: #0c3;
+			font-size: 16px;
+			color: #fff;
+			margin: 20px 50px;
+		}
+		#form-regist #submit:hover{
+			background: #0b0;
+		}
+	</style>
+	<script>
+		var app = angular.module('reg', []);
+		app.controller('cont1', function($scope, $http){
+			$scope.username = '';
+			$scope.password = '';
+			$scope.repass = '';
+			$scope.birth = '';
+			$scope.cell = '';
+			$scope.btnType = 'button';
+			$scope.ver = {
+				unameVerify : '',
+				passVerify : '',
+				repassVerify : '',
+				birthVerify : '',
+				cellVerify : ''
+			};
+			$scope.do = {
+				user : function(x){
+					var re = /^\w{6,15}$/;
+					if (!x) {
+						$scope.ver.unameVerify = '请输入用户名！';
+						$scope.sty1 = 'red';
+					}else if (x.length < 6 || x.length > 15) {
+						$scope.ver.unameVerify = '用户名长度应在 6~15 之间！';
+						$scope.sty1 = 'red';
+					}else if (!re.test(x)) {
+						$scope.ver.unameVerify = '用户名存在空格或非法字符！';
+						$scope.sty1 = 'red';
+					}else{
+						/* {
+							method:'post',
+							url:'http://localhost:9527/form',
+							data:{username : $scope.username},
+							headers:{'Content-Type': 'application/x-www-form-urlencoded'}
+						} */
+						$http({
+							method:'post',
+							url:'http://localhost:9527/user/form',
+							data:{username : $scope.username},
+							headers:{'Content-Type': 'application/json'}
+						}).then(function(res){
+							if (res.isRegisted) {
+								$scope.ver.unameVerify = '用户名已被注册！';
+								$scope.sty1 = 'red';
+							}else{
+								$scope.ver.unameVerify = '√';
+								$scope.sty1 = 'green';
+							}
+						}, function(){
+							$scope.ver.unameVerify = '用户名校验失败！';
+							$scope.sty1 = 'red';
+						});
+						
+					}
+					this.submit();
+					
+				},
+				pass : function(x){
+					this.user($scope.username);
+					if (!x) {
+						$scope.ver.passVerify = '请输入密码！';
+						$scope.sty2 = 'red';
+					}else if (x.length < 6) {
+						$scope.ver.passVerify = '密码长度不得小于6位！';
+						$scope.sty2 = 'red';
+					}else{
+						$scope.ver.passVerify = '√';
+						$scope.sty2 = 'green';
+					}
+					this.submit();
+				},
+				repass : function(x, y){
+					this.user($scope.username);
+					this.pass($scope.password);
+					if (!x) {
+						$scope.ver.repassVerify = '您尚未输入密码！';
+						$scope.sty3 = 'red';
+					}else if (x !== y) {
+						$scope.ver.repassVerify = '两次输入的密码不一致！';
+						$scope.sty3 = 'red';
+					}else{
+						$scope.ver.repassVerify = '√';
+						$scope.sty3 = 'green';
+					}
+					this.submit();
+				},
+				birth : function(x){
+					this.user($scope.username);
+					this.pass($scope.password);
+					this.repass($scope.repass, $scope.password);
+					var t = null;
+					if (!x) {
+						$scope.ver.birthVerify = '请提供出身日期！';
+						$scope.sty4 = 'red';
+						return;
+					}else{
+						t = new Date().getTime() - x.getTime();
+					}
+					
+					if (t < 0) {
+						$scope.ver.birthVerify = '您尚未出生，不符合注册条件！';
+						$scope.sty4 = 'red';
+					}else{
+						var now = new Date().getFullYear()%4;
+						var n = now == 1 ? 4 : 5;
+						if (t < (365*18 + n)*24*3600*1000) {
+							$scope.ver.birthVerify = '未满 18 周岁，无法注册！';
+							$scope.sty4 = 'red';
+						}else{
+							$scope.ver.birthVerify = '√';
+							$scope.sty4 = 'green';
+						}
+					}
+					this.submit();
+				},
+				cell : function(x){
+					this.user($scope.username);
+					this.pass($scope.password);
+					this.repass($scope.repass, $scope.password);
+					this.birth($scope.birth);
+					var re = /^1[3|4|5|7|8][0-9]{9}$/;
+					if (!x) {
+						$scope.ver.cellVerify = '请输入您的手机号！';
+						$scope.sty5 = 'red';
+					}else if (!re.test(x.toString())) {
+						$scope.ver.cellVerify = '您输入的手机号有误！';
+						$scope.sty5 = 'red';
+					}else{
+						$scope.ver.cellVerify = '√';
+						$scope.sty5 = 'green';
+					}
+					this.submit();
+				},
+				submit : function(){
+					for(var key in $scope.ver){ 
+						if ($scope.ver[key] != '√') {
+							$scope.btnType = 'button';
+							return;
+						}
+					}
+
+					$scope.btnType = 'submit';
+				}
+			};
+
+			$scope.$watch('password', function(){
+			if ($scope.repass) {
+				$scope.do.repass($scope.repass, $scope.password);
+			}
+		});
+		});
+
+		
+	</script>
+</head>
+<body ng-app="reg">
+	<div id="form-regist" ng-controller="cont1">
+		<h3>请注册：</h3>
+		<form action="/user/regist" method="post">
+	    	<p>
+	    		<label for="username">用户名：</label>
+	    		<input type="text" name="username" ng-model="username" ng-blur="do.user(username)" required>
+	    		<span id="uname" style="color :{{sty1}}">{{ver.unameVerify}}</span>
+	    	</p>
+	    	<p>
+	    		<label for="password">密码：</label>
+	    		<input type="password" name="password" ng-model="password" ng-keyup="do.pass(password)" required>
+	    		<span id="pass" style="color :{{sty2}}">{{ver.passVerify}}</span>
+	    	</p>
+
+	    	<p>
+	    		<label for="repass">重输密码：</label>
+	    		<input type="password" name="repass" ng-model="repass" ng-keyup="do.repass(repass, password)" required>
+	    		<span id="repass" style="color :{{sty3}}">{{ver.repassVerify}}</span>
+	    	</p>
+	    	<p>
+	    		<label for="sex">性别：</label>
+	    		<input type="radio" name="sex" value="1" class="sex" checked="true">男
+	    		<input type="radio" name="sex" value="0" class="sex">女
+	    		<span id="sex"></span>
+	    	</p>
+	    	<p>
+	    		<label for="birthday">出生日期：</label>
+	    		<input type="date" name="birthday" ng-model="birth" ng-change="do.birth(birth)" required>
+	    		<span id="birth" style="color :{{sty4}}">{{ver.birthVerify}}</span>
+	    	</p>
+	    	<p>
+	    		<label for="cell_phone">手机号：</label>
+	    		<input type="number" name="cell_phone" ng-model="cell" ng-change="do.cell(cell)" required>
+	    		<span id="cell" style="color :{{sty5}}">{{ver.cellVerify}}</span>
+	    	</p>
+	    	<p>
+	    		<input type="{{btnType}}" value="注 册" id="submit">
+	    	</p>
+	    </form>
+	</div>
+    
+</body>
+</html>

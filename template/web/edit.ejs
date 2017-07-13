@@ -1,0 +1,36 @@
+<!-- 按钮——回主页 -->
+<div class="edit-btn" id="return">
+	<a ui-sref="first">回主页</a>
+</div>
+
+<div id="edit">
+	<form action="http://localhost:9527/web/publish" method="post">
+		<input type="hidden" name="authorId" ng-model="authorId" ng-value="authorId">
+		<p>
+			<label for="title">标题：</label>
+			<input type="text" name="title" class="inp" required pattern=".{5,20}" placeholder="请输入标题，长度在 5~20 之间！">
+		</p>
+		<p>
+			<label for="keys">关键词：</label>
+			<input type="text" name="keywords" ng-model="keywords" ng-blur="escape();" class="inp" required pattern=".{5,20}" placeholder="请输入关键词，用逗号隔开(,)，长度在 5~20 之间！">
+		</p>
+		<p class="type">
+			<label for="type">分类：</label><span id="msg">{{types.length == 0 && !show ? ' 请添加一个文章分类！' : ''}}</span>
+			<span ng-repeat="v in types" ng-class="typeClass">
+				<input type="radio" name="typeId" ng-value="v.ID" required>{{v.type_name}}<a href="javascript:;" class="delete" ng-click="del(v);" ng-show="show">×</a>
+			</span>
+			<strong ng-show="show">
+				<input type="text" ng-model="newType">
+				<a href="javascript:;" id="save" ng-click="addType(newType);">√</a><a href="javascript:;" id="cancel" ng-click="newType='';" ng-hide="!newType">×</a>
+			</strong>
+			<input type="button" ng-value="show ? '取消' : '修改'" id="change" ng-click="update();">
+		</p>
+		<p id="con">
+			<label for="content">正文：</label>
+			<textarea name="content" id="content" required placeholder="请输入正文..."></textarea>
+		</p>
+		<p>
+			<input type="submit" value="立即提交" id="submit">
+		</p>
+	</form>
+</div>

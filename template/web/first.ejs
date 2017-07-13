@@ -1,0 +1,35 @@
+<!-- 按钮——写博客 -->
+<div class="edit-btn">
+	<a ui-sref="edit">写博客</a>
+</div>
+
+<!-- 导航条——文章分类 -->
+<div id="nav">
+	<ul id="nav-bar">
+		<li ng-class="nowIndex == -1 ? 'active' : ''" ng-click="nowNav(-1,0);">首页</li>
+		<li ng-repeat="v in types" ng-class="nowIndex == $index ? 'active' : ''" ng-click="nowNav($index, v.ID);">{{v.type_name}}</li>
+	</ul>
+</div>
+
+<!-- 文章列表 -->
+<div id="articles">
+	<ul id="list">
+		<li class="content" ng-repeat="v in articles">
+			<a ui-sref="article({aId : v.ID})" ng-click="addReqCount(v.ID);">
+				<div id="title">
+					<h3>{{v.title}} <span class="insert">点击进入</span></h3>
+					<p><span ng-repeat="k in v.keywords|toArray">{{k}}</span></p>
+				</div>
+				<div id="hot">
+					<p id="req">{{v.req_count}} 访问</p>
+					<div></div>
+					<p id="comm">{{v.count}} 评论</p>
+				</div>
+			</a>
+		</li>
+		
+		<li class="content more" ng-show="articles.length >= 10">
+			<a href="" ng-click="showMore()">显示更多>></a>
+		</li>
+	</ul>
+</div>
